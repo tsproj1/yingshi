@@ -1,0 +1,23 @@
+name: Sync Fork
+
+on:
+  schedule:
+    # 每 6 小时运行一次
+    - cron: "0 */6 * * *"
+
+  # 支持在 Actions 页面手动运行
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Sync fork with upstream
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh repo sync "${{ github.repository }}" --force
